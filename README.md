@@ -62,13 +62,13 @@ src/
 ## 1. Fetch GitHub Profile And Store In Database
 
 ```http
-GET /api/github/:username
+GET https://github-profile-analyzer369.up.railway.app/api/github/:username
 ```
 
 ### Example
 
 ```http
-GET /api/github/octocat
+GET https://github-profile-analyzer369.up.railway.app/api/github/octocat
 ```
 
 ### Response
@@ -90,7 +90,7 @@ GET /api/github/octocat
 ## 2. Get All Stored Profiles
 
 ```http
-GET /api/profiles
+GET https://github-profile-analyzer369.up.railway.app/api/profiles
 ```
 
 ---
@@ -98,13 +98,13 @@ GET /api/profiles
 ## 3. Get Single Stored Profile
 
 ```http
-GET /api/profiles/:username
+GET https://github-profile-analyzer369.up.railway.app/api/profiles/:username
 ```
 
 ### Example
 
 ```http
-GET /api/profiles/octocat
+GET https://github-profile-analyzer369.up.railway.app/api/profiles/octocat
 ```
 
 ---
@@ -112,13 +112,13 @@ GET /api/profiles/octocat
 ## 4. Delete Stored Profile
 
 ```http
-DELETE /api/profiles/:username
+DELETE https://github-profile-analyzer369.up.railway.app/api/profiles/:username
 ```
 
 ### Example
 
 ```http
-DELETE /api/profiles/octocat
+DELETE https://github-profile-analyzer369.up.railway.app/api/profiles/octocat
 ```
 
 ---
@@ -127,14 +127,23 @@ DELETE /api/profiles/octocat
 
 ```prisma
 model GithubProfile {
-  id               Int      @id @default(autoincrement())
-  username         String   @unique
-  name             String?
-  followers        Int
-  followingCount   Int
-  publicRepos      Int
-  profileUrl       String
-  createdAt        DateTime @default(now())
+  id                 Int      @id @default(autoincrement())
+  githubId           Int      @unique
+  username           String   @unique
+  name               String?
+  email              String?
+  bio                String?
+  avatarUrl          String?
+  githubProfileUrl   String
+  publicRepos        Int      @default(0)
+  followers          Int      @default(0)
+  following          Int      @default(0)
+  profileStrength    String?
+  developerLevel     String?
+  activityLevel      String?
+  githubCreatedAt    DateTime
+  githubUpdatedAt    DateTime
+  analyzedAt         DateTime @default(now())
 }
 ```
 
@@ -145,7 +154,7 @@ model GithubProfile {
 Create a `.env` file in the root directory.
 
 ```env
-PORT=5000
+PORT=3000
 
 DATABASE_URL="mysql://root:password@localhost:3306/github_analyzer"
 ```
@@ -153,13 +162,6 @@ DATABASE_URL="mysql://root:password@localhost:3306/github_analyzer"
 ---
 
 # Installation And Setup
-
-## 1. Clone Repository
-
-```bash
-git clone <your-github-repository-url>
-```
-
 ---
 
 ## 2. Install Dependencies
